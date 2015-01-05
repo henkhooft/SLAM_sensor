@@ -44,9 +44,7 @@ class CalibrationParser
         };
 
 		sensor_msgs::CameraInfo* parseCalibrationCameraInfo(sensor_msgs::CameraInfo *cam_info[]);
-		
         void parseYAML(const YAML::Node& node, CalibrationParser::Cam_cal& c);
-        
         inline Cam_cal getCalibration(const int index) { return cams[index]; }
 
     private:
