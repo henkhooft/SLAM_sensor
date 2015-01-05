@@ -29,7 +29,7 @@ SOFTWARE. */
 */
 CalibrationParser::CalibrationParser()
 {
-    filename = ros::package::getPath("euroc_solution_t2");
+    filename = ros::package::getPath("SLAM_sensor");
     filename += "/camera_calibration.yaml";
 
     if (!parseCalibration())
