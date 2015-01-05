@@ -23,8 +23,6 @@ SOFTWARE. */
 #pragma once
 #include <ros/ros.h>
 #include <ros/package.h>
-#include <opencv2/opencv.hpp>
-#include <fstream>
 #include "sensor_msgs/CameraInfo.h"
 #include "yaml-cpp/yaml.h"
 
