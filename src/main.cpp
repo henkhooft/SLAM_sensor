@@ -20,6 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
+#include <vector>
 #include "ros/ros.h"
 
 #include "tf/transform_broadcaster.h"
@@ -80,10 +81,8 @@ void poseCallback(const geometry_msgs::PoseStamped pose)
 
 void setupTF()
 {
-	double trans[] = {0, 0, 0};
-	double rot[] = {0, 0, 0,
-					0, 0, 0,
-					0, 0, 0};
+	std::vector<double> trans = parser->getTranslation();
+	std::vector<double> rot = parser->getRotation();
 
 	tf::Vector3 origin;
 	tf::Matrix3x3 tf3d;
@@ -112,8 +111,8 @@ int main(int argc, char** argv)
 	tf_br = &_br;
 
 	// Register services and topics
-	pub_info0 = n.advertise<sensor_msgs::CameraInfo>("/cam0/camera_info", 1000);
-	pub_info1 = n.advertise<sensor_msgs::CameraInfo>("/cam1/camera_info", 1000);
+	pub_info0 = n.advertise<sensor_msgs::CameraInfo>("/left/camera_info", 1000);
+	pub_info1 = n.advertise<sensor_msgs::CameraInfo>("/right/camera_info", 1000);
 
 	// Setup calibration data for publishing
 	parser = new CalibrationParser();
@@ -121,6 +120,9 @@ int main(int argc, char** argv)
 	sensor_msgs::CameraInfo* c = parser->parseCalibrationCameraInfo(cams);
 	info0 = *c;
 	info1 = *(c+1);
+
+	// setup TF
+	setupTF();
 
 	ROS_INFO("Started publisher node, waiting for raw images...");
 	ros::spin();

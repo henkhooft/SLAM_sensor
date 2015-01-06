@@ -23,6 +23,8 @@ SOFTWARE. */
 #pragma once
 #include <ros/ros.h>
 #include <ros/package.h>
+#include <vector>
+
 #include "sensor_msgs/CameraInfo.h"
 #include "yaml-cpp/yaml.h"
 
@@ -43,12 +45,21 @@ class CalibrationParser
             double P[12];               // Projection matrix 3x4
         };
 
+        struct Cam_transf
+        {
+            std::vector<double> rot;
+            std::vector<double> transl;
+        };
+
 		sensor_msgs::CameraInfo* parseCalibrationCameraInfo(sensor_msgs::CameraInfo *cam_info[]);
         void parseYAML(const YAML::Node& node, CalibrationParser::Cam_cal& c);
         inline Cam_cal getCalibration(const int index) { return cams[index]; }
+        inline std::vector<double> getTranslation() { return transf_.transl; }
+        inline std::vector<double> getRotation() { return transf_.rot; }
 
     private:
         struct Cam_cal cams[2];
+        struct Cam_transf transf_;
         std::string filename;
         bool parseCalibration();
 };

@@ -130,4 +130,21 @@ void CalibrationParser::parseYAML(const YAML::Node& node, CalibrationParser::Cam
     {
         c.D[i] = n4[i].as<double>();
     }
+
+    // Extra options for parsing rotation and translation
+    // These values are only given with the second camera parameters
+    if (node["rotation_matrix"]["data"])
+    {
+        const YAML::Node& n5 = node["rotation_matrix"]["data"];
+        for (unsigned i=0; i < n5.size(); i++)
+        {
+            transf_.rot[i] = n5[i].as<double>();
+        }
+
+        const YAML::Node& n6 = node["translation_matrix"]["data"];
+        for (unsigned i=0; i< n6.size(); i++)
+        {
+            transf_.transl[i] = n6[i].as<double>();
+        }
+    }
 }
